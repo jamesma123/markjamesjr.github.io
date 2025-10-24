@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vinci Vision Systems</title>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: #000; /* deep black behind the rain */
+      color: #000;      /* default text for white cards */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Background Matrix canvas */
+    #matrix-bg {
+      position: fixed;
+      inset: 0;
+      display: block;
+      z-index: 0;  /* behind everything */
+    }
+
+    /* Three.js canvas above background, below UI */
+    canvas.three {
+      position: fixed;
+      inset: 0;
+      display: block;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* === Top Navigation (solid black, centered brand) === */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 20px;
+      background: #ffffff00;
+      z-index: 100;
+    }
+    .brand {
+      justify-self: center;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 30px;
+    }
+    .nav-left { justify-self: start; }
+    .nav { display: flex; gap: 16px; justify-self: end; }
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .nav a:hover { background: rgba(255,255,255,0.15); }
+
+    /* === VVS Services (clean white cards) === */
+    .services-wrap {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 2%;
+      width: min(92vw, 1100px);
+      z-index: 103; /* above cube and bg */
+      pointer-events: auto;
+    }
+    .services-title {
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 40px;
+      margin-bottom: 10px;
+      color: #ffffff; /* teal-blue nod to your logo */
+      text-shadow: 0 0 20px rgba(102,204,255,0.35);
+    }
+    .services-row {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(240px, 1fr);
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+    .service-card {
+      background: #ffffff00;
+      border: 1px solid #e2e2e200;
+      border-radius: 14px;
+      padding: 12px;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .service-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.14);
+      border-color: #d6d6d600;
+    }
+
+    .svc-media {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+    }
+    .svc-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .svc-title {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .02em;
+      color: #ffffff;
+    }
+    .svc-text {
+      font-size: 13px;
+      color: #ffffff;
+      line-height: 1.4;
+      opacity: 1;
+    }
+    .svc-link {
+      margin-top: 2px;
+      font-size: 13px;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: .02em;
+      justify-self: start;
+    }
+    .svc-link:hover { text-decoration: underline; color: #222; }
+
+    @media (max-width: 900px) {
+      .services-wrap { bottom: 3%; width: 94vw; }
+    }
+    @media (max-width: 520px) {
+      .topbar { height: 52px; padding: 0 14px; }
+      .nav a { font-size: 13px; padding: 8px 8px; }
+      .services-title { font-size: 13px; }
+      .services-row { gap: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Matrix (blue/teal) background -->
+  <canvas id="matrix-bg"></canvas>
+
+  <header class="topbar">
+    <div class="nav-left"></div>
+    <a class="brand" href="#">VINCI VISION SYSTEMS</a>
+    <nav class="nav">
+      <a href="#home">Home</a>
+      <a href="#about">About Us</a>
+    </nav>
+  </header>
+
+  <!-- VVS Services with video cards -->
+  <section class="services-wrap" aria-label="VVS Services">
+    <div class="services-title">VVS Services</div>
+    <div class="services-row">
+      <div class="service-card">
+        <div class="svc-media">
+          <video muted autoplay playsinline loop preload="metadata">
+            <source src="unity_rl_F.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="svc-title">AI Training Services (Unity)</div>
+        <div class="svc-text">Synthetic data pipelines and simulation with Unity to train robust models.</div>
+      </div>
+
+      <div class="service-card">
+        <div class="svc-media">
+          <video muted autoplay playsinline loop preload="metadata">
+            <source src="threat_m.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="svc-title">Detection & Classification</div>
+        <div class="svc-text">YOLO-based detection and multi-class classification for real-time insights.</div>
+        
+      </div>
+
+      <div class="service-card">
+        <div class="svc-media">
+          <video muted autoplay playsinline loop preload="metadata">
+            <source src="VRdemo.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="svc-title">AR/VR Environment Development</div>
+        <div class="svc-text">Immersive training and visualizations with optimized 3D environments.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three.js -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+
+  <script>
+    /* ===== Your Matrix code, converted to vanilla JS ===== */
+    (function(){
+      const canvas = document.getElementById('matrix-bg');
+      const ctx = canvas.getContext('2d');
+
+      // Type from your TS: MatrixColumn
+      let columns = [];
+      const fontSize = 16;
+      let columnCount = 0;
+
+      const matrixChars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+      // Teal/mid-blue shades to match your logo
+      const blueShades = [
+        "rgba(0, 150, 255, 1)",   // Bright blue
+        "rgba(0, 100, 200, 1)",   // Medium blue
+        "rgba(30, 144, 255, 1)",  // Dodger blue
+        "rgba(65, 105, 225, 1)",  // Royal blue
+      ];
+
+      function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columnCount = Math.floor(canvas.width / fontSize);
+
+        columns = [];
+        for (let i = 0; i < columnCount; i++) {
+          const charCount = Math.floor(canvas.height / fontSize);
+          const characters = new Array(charCount).fill("").map(() =>
+            matrixChars[Math.floor(Math.random() * matrixChars.length)]
+          );
+          const opacity = new Array(charCount).fill(0).map((_, idx) => Math.max(0, 1 - idx * 0.05));
+          columns.push({
+            x: i * fontSize,
+            y: Math.random() * canvas.height * -1,
+            speed: Math.random() * 2 + 1,
+            characters,
+            opacity
+          });
+        }
+
+        // Ensure crisp monospace
+        ctx.font = `${fontSize}px monospace`;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      let raf;
+      function animate() {
+        // soft fade for trails
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.font = `${fontSize}px monospace`;
+
+        columns.forEach((column) => {
+          column.characters.forEach((char, idx) => {
+            const y = column.y + idx * fontSize;
+
+            if (y > 0 && y < canvas.height) {
+              if (idx === 0) {
+                // head char brightest white-blue
+                ctx.fillStyle = "rgba(200, 230, 255, 1)";
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "rgba(0, 150, 255, 0.8)";
+              } else {
+                const op = column.opacity[idx];
+                const color = blueShades[Math.min(idx, blueShades.length - 1)];
+                ctx.fillStyle = color.replace("1)", `${op})`);
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = color.replace("1)", "0.3)");
+              }
+              ctx.fillText(char, column.x, y);
+            }
+          });
+
+          // move column
+          column.y += column.speed;
+
+          // reset when it passes screen
+          if (column.y > canvas.height) {
+            column.y = Math.random() * -500;
+            column.speed = Math.random() * 2 + 1;
+            column.characters = column.characters.map(() =>
+              matrixChars[Math.floor(Math.random() * matrixChars.length)]
+            );
+          }
+
+          // occasionally mutate a character for flicker
+          if (Math.random() > 0.98) {
+            const randomIdx = Math.floor(Math.random() * column.characters.length);
+            column.characters[randomIdx] =
+              matrixChars[Math.floor(Math.random() * matrixChars.length)];
+          }
+        });
+
+        // reset shadow
+        ctx.shadowBlur = 0;
+
+        raf = requestAnimationFrame(animate);
+      }
+      animate();
+
+      // optional cleanup
+      window.addEventListener('beforeunload', () => cancelAnimationFrame(raf));
+    })();
+  </script>
+
+  <script>
+    /* ===== Three.js spinning logo cube (transparent over background) ===== */
+    (function(){
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(0, -0.3, 6);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0); // transparent to reveal matrix
+      renderer.domElement.classList.add('three');
+      document.body.appendChild(renderer.domElement);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+      const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+      dir.position.set(2, 3, 4);
+      scene.add(dir);
+
+      const loader = new THREE.TextureLoader();
+      loader.load('logo.png', (texture) => {
+        texture.colorSpace = THREE.SRGBColorSpace;
+        // distinct materials per face (same texture) to avoid shared-state quirks
+        const materials = Array.from({length: 6}, () => new THREE.MeshBasicMaterial({ map: texture }));
+        const cube = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), materials);
+        scene.add(cube);
+
+        (function animate(){
+          requestAnimationFrame(animate);
+          cube.rotation.y += 0.005; // slow, steady, rightward
+          renderer.render(scene, camera);
+        })();
+      }, undefined, () => {
+        const cube = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshStandardMaterial({ color: 0x00aaff }));
+        scene.add(cube);
+        (function animate(){
+          requestAnimationFrame(animate);
+          cube.rotation.y += 0.005;
+          renderer.render(scene, camera);
+        })();
+      });
+
+      addEventListener('resize', () => {
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+      });
+
+      addEventListener('contextmenu', e => e.preventDefault());
+      addEventListener('dragstart', e => e.preventDefault());
+    })();
+  </script>
+</body>
+</html>
