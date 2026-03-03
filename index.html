@@ -4,380 +4,709 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Vinci Vision Systems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      overflow: hidden;
-      font-family: 'Segoe UI', Roboto, sans-serif;
-      background: #000; /* deep black behind the rain */
-      color: #000;      /* default text for white cards */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #000000;
+      --off-black: #0a0a0a;
+      --carbon: #111111;
+      --steel: #1a1a1a;
+      --gunmetal: #2a2a2a;
+      --silver: #8a8a8a;
+      --light: #c8c8c8;
+      --white: #f0f0f0;
+      --accent: #00c2ff;
+      --accent-dim: rgba(0, 194, 255, 0.12);
+      --accent-glow: rgba(0, 194, 255, 0.25);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Outfit', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gunmetal) var(--black);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
+      cursor: default;
     }
 
-    /* Background Matrix canvas */
-    #matrix-bg {
-      position: fixed;
-      inset: 0;
-      display: block;
-      z-index: 0;  /* behind everything */
+    ::selection {
+      background: var(--accent);
+      color: var(--black);
     }
 
-    /* Three.js canvas above background, below UI */
-    canvas.three {
-      position: fixed;
-      inset: 0;
-      display: block;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    /* === Top Navigation (solid black, centered brand) === */
-    .topbar {
+    /* ─── NAV ─── */
+    nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      height: 56px;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      z-index: 1000;
+      display: flex;
       align-items: center;
-      padding: 0 20px;
-      background: #ffffff00;
-      z-index: 100;
+      justify-content: space-between;
+      padding: 0 clamp(24px, 4vw, 64px);
+      height: 72px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.4s;
     }
-    .brand {
-      justify-self: center;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 30px;
-    }
-    .nav-left { justify-self: start; }
-    .nav { display: flex; gap: 16px; justify-self: end; }
-    .nav a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 14px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      transition: background .2s ease, color .2s ease;
-    }
-    .nav a:hover { background: rgba(255,255,255,0.15); }
 
-    /* === VVS Services (clean white cards) === */
-    .services-wrap {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 2%;
-      width: min(92vw, 1100px);
-      z-index: 103; /* above cube and bg */
-      pointer-events: auto;
-    }
-    .services-title {
-      text-align: center;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 40px;
-      margin-bottom: 10px;
-      color: #ffffff; /* teal-blue nod to your logo */
-      text-shadow: 0 0 20px rgba(102,204,255,0.35);
-    }
-    .services-row {
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(240px, 1fr);
+    .logo {
+      display: flex;
+      align-items: center;
       gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: thin;
-    }
-    .service-card {
-      background: #ffffff00;
-      border: 1px solid #e2e2e200;
-      border-radius: 14px;
-      padding: 12px;
-      display: grid;
-      grid-template-rows: auto auto 1fr auto;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
       text-decoration: none;
-      color: inherit;
-    }
-    .service-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(0,0,0,0.14);
-      border-color: #d6d6d600;
     }
 
-    .svc-media {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: #000;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid #ddd;
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
-    .svc-media video {
+
+    .logo-mark::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+    }
+
+    .logo-text {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .logo-text span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      color: var(--silver);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border-radius: 2px;
+      transition: color 0.3s, background 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .nav-cta {
+      margin-left: 12px;
+      padding: 9px 24px !important;
+      background: var(--accent) !important;
+      color: var(--black) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.06em !important;
+      transition: opacity 0.3s !important;
+    }
+
+    .nav-cta:hover {
+      opacity: 0.85;
+      background: var(--accent) !important;
+      color: var(--black) !important;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero-video-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-video-wrap video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
 
-    .svc-title {
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: .02em;
-      color: #ffffff;
+    /* Cinematic overlays */
+    .hero-video-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.7) 85%, rgba(0,0,0,0.95) 100%),
+        linear-gradient(to right, rgba(0,0,0,0.4) 0%, transparent 50%);
+      z-index: 1;
     }
-    .svc-text {
-      font-size: 13px;
-      color: #ffffff;
-      line-height: 1.4;
-      opacity: 1;
-    }
-    .svc-link {
-      margin-top: 2px;
-      font-size: 13px;
-      text-decoration: none;
-      color: #ffffff;
-      font-weight: 600;
-      letter-spacing: .02em;
-      justify-self: start;
-    }
-    .svc-link:hover { text-decoration: underline; color: #222; }
 
-    @media (max-width: 900px) {
-      .services-wrap { bottom: 3%; width: 94vw; }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: clamp(32px, 6vw, 80px);
+      padding-bottom: clamp(48px, 8vh, 96px);
+      max-width: 800px;
     }
-    @media (max-width: 520px) {
-      .topbar { height: 52px; padding: 0 14px; }
-      .nav a { font-size: 13px; padding: 8px 8px; }
-      .services-title { font-size: 13px; }
-      .services-row { gap: 10px; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.3s ease forwards;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 8vw, 112px);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s ease forwards;
+    }
+
+    .hero-h1 em {
+      font-style: normal;
+      color: var(--accent);
+      text-shadow: 0 0 60px var(--accent-glow);
+    }
+
+    .hero-sub {
+      font-size: clamp(15px, 1.4vw, 18px);
+      font-weight: 300;
+      color: var(--light);
+      line-height: 1.6;
+      max-width: 520px;
+      margin-bottom: 36px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s ease forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s ease forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: var(--accent);
+      color: var(--black);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.85;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* Scanning line overlay on video */
+    .scan-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--accent), transparent);
+      opacity: 0.25;
+      z-index: 2;
+      animation: scanMove 6s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scanMove {
+      0% { top: 0; }
+      100% { top: 100%; }
+    }
+
+    /* Corner brackets on video — defense-tech aesthetic */
+    .corner-bracket {
+      position: absolute;
+      z-index: 3;
+      width: 28px;
+      height: 28px;
+      border-color: var(--accent);
+      border-style: solid;
+      border-width: 0;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .corner-bracket.tl { top: 24px; left: 24px; border-top-width: 2px; border-left-width: 2px; }
+    .corner-bracket.tr { top: 24px; right: 24px; border-top-width: 2px; border-right-width: 2px; }
+    .corner-bracket.bl { bottom: 24px; left: 24px; border-bottom-width: 2px; border-left-width: 2px; }
+    .corner-bracket.br { bottom: 24px; right: 24px; border-bottom-width: 2px; border-right-width: 2px; }
+
+    /* HUD telemetry text */
+    .hud-info {
+      position: absolute;
+      top: 32px;
+      right: 72px;
+      z-index: 3;
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.5;
+      text-align: right;
+      line-height: 1.8;
+      pointer-events: none;
+    }
+
+    /* ─── CAPABILITIES ─── */
+    .capabilities {
+      padding: clamp(64px, 10vw, 120px) clamp(24px, 4vw, 64px);
+      background: var(--off-black);
+      position: relative;
+    }
+
+    .capabilities::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gunmetal), transparent);
+    }
+
+    .section-header {
+      max-width: 600px;
+      margin-bottom: 64px;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .section-tag::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .section-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      letter-spacing: 0.02em;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px;
+      background: var(--gunmetal);
+      border: 1px solid var(--gunmetal);
+    }
+
+    .cap-card {
+      background: var(--off-black);
+      padding: clamp(28px, 3vw, 48px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: background 0.4s;
+      position: relative;
+    }
+
+    .cap-card:hover {
+      background: var(--carbon);
+    }
+
+    .cap-card:hover .cap-icon {
+      color: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-dim);
+    }
+
+    .cap-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--gunmetal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--silver);
+      transition: all 0.4s;
+    }
+
+    .cap-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .cap-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: 0.06em;
+      color: var(--white);
+    }
+
+    .cap-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--silver);
+      line-height: 1.65;
+    }
+
+    .cap-num {
+      position: absolute;
+      bottom: 20px;
+      right: 24px;
+      font-family: var(--font-display);
+      font-size: 48px;
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+    }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--gunmetal);
+      border-top: 1px solid var(--gunmetal);
+      border-bottom: 1px solid var(--gunmetal);
+    }
+
+    .stat {
+      background: var(--black);
+      padding: clamp(28px, 4vw, 48px);
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 56px);
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--silver);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 48px clamp(24px, 4vw, 64px);
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 0.14em;
+      color: var(--silver);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--silver);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .footer-copy {
+      width: 100%;
+      text-align: center;
+      font-size: 11px;
+      color: var(--gunmetal);
+      margin-top: 24px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scroll-triggered fade-in */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { height: 60px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero-content { padding: 24px; padding-bottom: 48px; }
+      .hud-info { display: none; }
+      .corner-bracket { width: 20px; height: 20px; }
+      .corner-bracket.tl { top: 16px; left: 16px; }
+      .corner-bracket.tr { top: 16px; right: 16px; }
+      .corner-bracket.bl { bottom: 16px; left: 16px; }
+      .corner-bracket.br { bottom: 16px; right: 16px; }
     }
   </style>
 </head>
 
 <body>
-  <!-- Matrix (blue/teal) background -->
-  <canvas id="matrix-bg"></canvas>
 
-  <header class="topbar">
-    <div class="nav-left"></div>
-    <a class="brand" href="#">VINCI VISION SYSTEMS</a>
-    <nav class="nav">
-      <a href="#home">Home</a>
-      <a href="#about">About Us</a>
-    </nav>
-  </header>
+  <!-- ─── NAVIGATION ─── -->
+  <nav>
+    <a class="logo" href="#">
+      <div class="logo-mark"></div>
+      <div class="logo-text">VINCI <span>VISION</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#capabilities">Platform</a>
+      <a href="#stats">Results</a>
+      <a href="#" class="nav-cta">Contact</a>
+    </div>
+  </nav>
 
-  <!-- VVS Services with video cards -->
-  <section class="services-wrap" aria-label="VVS Services">
-    <div class="services-title">VVS Services</div>
-    <div class="services-row">
-      <div class="service-card">
-        <div class="svc-media">
-          <video muted autoplay playsinline loop preload="metadata">
-            <source src="unity_rl_F.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="svc-title">AI Training Services (Unity)</div>
-        <div class="svc-text">Synthetic data pipelines and simulation with Unity to train robust models.</div>
+  <!-- ─── HERO ─── -->
+  <section class="hero" id="home">
+    <div class="hero-video-wrap">
+      <video muted autoplay playsinline loop preload="auto">
+        <source src="threat_m.mp4" type="video/mp4">
+      </video>
+      <div class="scan-line"></div>
+      <div class="corner-bracket tl"></div>
+      <div class="corner-bracket tr"></div>
+      <div class="corner-bracket bl"></div>
+      <div class="corner-bracket br"></div>
+      <div class="hud-info">
+        SYS::ACTIVE<br>
+        FPS 30 &bull; RES 1920×1080<br>
+        MODEL YOLOv8-X<br>
+        CONF 0.94
       </div>
+    </div>
 
-      <div class="service-card">
-        <div class="svc-media">
-          <video muted autoplay playsinline loop preload="metadata">
-            <source src="threat_m.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="svc-title">Detection & Classification</div>
-        <div class="svc-text">YOLO-based detection and multi-class classification for real-time insights.</div>
-        
-      </div>
-
-      <div class="service-card">
-        <div class="svc-media">
-          <video muted autoplay playsinline loop preload="metadata">
-            <source src="VRdemo.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="svc-title">AR/VR Environment Development</div>
-        <div class="svc-text">Immersive training and visualizations with optimized 3D environments.</div>
+    <div class="hero-content">
+      <div class="hero-tag">Computer Vision &bull; Defense &bull; Autonomy</div>
+      <h1 class="hero-h1">SEE EVERYTHING.<br><em>MISS NOTHING.</em></h1>
+      <p class="hero-sub">Real-time YOLO-based detection and classification systems engineered for defense, security, and autonomous operations.</p>
+      <div class="hero-actions">
+        <a href="#capabilities" class="btn-primary">
+          Explore Platform
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="#" class="btn-ghost">Request Demo</a>
       </div>
     </div>
   </section>
 
-  <!-- Three.js -->
-  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <!-- ─── CAPABILITIES ─── -->
+  <section class="capabilities" id="capabilities">
+    <div class="section-header reveal">
+      <div class="section-tag">What We Build</div>
+      <h2 class="section-h2">MISSION-CRITICAL<br>VISION SYSTEMS</h2>
+    </div>
 
+    <div class="cap-grid">
+      <div class="cap-card reveal">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="cap-title">REAL-TIME DETECTION</div>
+        <div class="cap-desc">Sub-frame latency object detection and tracking across aerial, ground, and maritime domains. Built on optimized YOLO architectures for edge deployment.</div>
+        <div class="cap-num">01</div>
+      </div>
+
+      <div class="cap-card reveal">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="cap-title">SYNTHETIC DATA PIPELINES</div>
+        <div class="cap-desc">Unity-powered simulation environments generating photorealistic training data at scale. Reduce annotation costs while expanding edge-case coverage.</div>
+        <div class="cap-num">02</div>
+      </div>
+
+      <div class="cap-card reveal">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="cap-title">MULTI-CLASS CLASSIFICATION</div>
+        <div class="cap-desc">Threat identification and asset classification across dozens of categories with confidence scoring, hierarchical labeling, and continuous model refinement.</div>
+        <div class="cap-num">03</div>
+      </div>
+
+      <div class="cap-card reveal">
+        <div class="cap-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        </div>
+        <div class="cap-title">AR/VR INTEGRATION</div>
+        <div class="cap-desc">Immersive operator interfaces and training environments. Fuse CV outputs into 3D situational awareness displays for enhanced decision-making.</div>
+        <div class="cap-num">04</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── STATS ─── -->
+  <section class="stats-bar" id="stats">
+    <div class="stat reveal">
+      <div class="stat-num">94.7%</div>
+      <div class="stat-label">Detection Accuracy</div>
+    </div>
+    <div class="stat reveal">
+      <div class="stat-num">&lt;12ms</div>
+      <div class="stat-label">Inference Latency</div>
+    </div>
+    <div class="stat reveal">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Object Classes</div>
+    </div>
+    <div class="stat reveal">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Persistent Monitoring</div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-brand">VINCI VISION SYSTEMS</div>
+    <div class="footer-links">
+      <a href="#">Platform</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-copy">&copy; 2025 Vinci Vision Systems. All rights reserved.</div>
+  </footer>
+
+  <!-- Scroll reveal -->
   <script>
-    /* ===== Your Matrix code, converted to vanilla JS ===== */
-    (function(){
-      const canvas = document.getElementById('matrix-bg');
-      const ctx = canvas.getContext('2d');
-
-      // Type from your TS: MatrixColumn
-      let columns = [];
-      const fontSize = 16;
-      let columnCount = 0;
-
-      const matrixChars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-      // Teal/mid-blue shades to match your logo
-      const blueShades = [
-        "rgba(0, 150, 255, 1)",   // Bright blue
-        "rgba(0, 100, 200, 1)",   // Medium blue
-        "rgba(30, 144, 255, 1)",  // Dodger blue
-        "rgba(65, 105, 225, 1)",  // Royal blue
-      ];
-
-      function resize() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
-        columnCount = Math.floor(canvas.width / fontSize);
-
-        columns = [];
-        for (let i = 0; i < columnCount; i++) {
-          const charCount = Math.floor(canvas.height / fontSize);
-          const characters = new Array(charCount).fill("").map(() =>
-            matrixChars[Math.floor(Math.random() * matrixChars.length)]
-          );
-          const opacity = new Array(charCount).fill(0).map((_, idx) => Math.max(0, 1 - idx * 0.05));
-          columns.push({
-            x: i * fontSize,
-            y: Math.random() * canvas.height * -1,
-            speed: Math.random() * 2 + 1,
-            characters,
-            opacity
-          });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.15 });
 
-        // Ensure crisp monospace
-        ctx.font = `${fontSize}px monospace`;
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      let raf;
-      function animate() {
-        // soft fade for trails
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.font = `${fontSize}px monospace`;
-
-        columns.forEach((column) => {
-          column.characters.forEach((char, idx) => {
-            const y = column.y + idx * fontSize;
-
-            if (y > 0 && y < canvas.height) {
-              if (idx === 0) {
-                // head char brightest white-blue
-                ctx.fillStyle = "rgba(200, 230, 255, 1)";
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = "rgba(0, 150, 255, 0.8)";
-              } else {
-                const op = column.opacity[idx];
-                const color = blueShades[Math.min(idx, blueShades.length - 1)];
-                ctx.fillStyle = color.replace("1)", `${op})`);
-                ctx.shadowBlur = 5;
-                ctx.shadowColor = color.replace("1)", "0.3)");
-              }
-              ctx.fillText(char, column.x, y);
-            }
-          });
-
-          // move column
-          column.y += column.speed;
-
-          // reset when it passes screen
-          if (column.y > canvas.height) {
-            column.y = Math.random() * -500;
-            column.speed = Math.random() * 2 + 1;
-            column.characters = column.characters.map(() =>
-              matrixChars[Math.floor(Math.random() * matrixChars.length)]
-            );
-          }
-
-          // occasionally mutate a character for flicker
-          if (Math.random() > 0.98) {
-            const randomIdx = Math.floor(Math.random() * column.characters.length);
-            column.characters[randomIdx] =
-              matrixChars[Math.floor(Math.random() * matrixChars.length)];
-          }
-        });
-
-        // reset shadow
-        ctx.shadowBlur = 0;
-
-        raf = requestAnimationFrame(animate);
-      }
-      animate();
-
-      // optional cleanup
-      window.addEventListener('beforeunload', () => cancelAnimationFrame(raf));
-    })();
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
 
-  <script>
-    /* ===== Three.js spinning logo cube (transparent over background) ===== */
-    (function(){
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
-      camera.position.set(0, -0.3, 6);
-
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor(0x000000, 0); // transparent to reveal matrix
-      renderer.domElement.classList.add('three');
-      document.body.appendChild(renderer.domElement);
-
-      scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-      const dir = new THREE.DirectionalLight(0xffffff, 0.8);
-      dir.position.set(2, 3, 4);
-      scene.add(dir);
-
-      const loader = new THREE.TextureLoader();
-      loader.load('logo.png', (texture) => {
-        texture.colorSpace = THREE.SRGBColorSpace;
-        // distinct materials per face (same texture) to avoid shared-state quirks
-        const materials = Array.from({length: 6}, () => new THREE.MeshBasicMaterial({ map: texture }));
-        const cube = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), materials);
-        scene.add(cube);
-
-        (function animate(){
-          requestAnimationFrame(animate);
-          cube.rotation.y += 0.005; // slow, steady, rightward
-          renderer.render(scene, camera);
-        })();
-      }, undefined, () => {
-        const cube = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshStandardMaterial({ color: 0x00aaff }));
-        scene.add(cube);
-        (function animate(){
-          requestAnimationFrame(animate);
-          cube.rotation.y += 0.005;
-          renderer.render(scene, camera);
-        })();
-      });
-
-      addEventListener('resize', () => {
-        camera.aspect = innerWidth / innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(innerWidth, innerHeight);
-      });
-
-      addEventListener('contextmenu', e => e.preventDefault());
-      addEventListener('dragstart', e => e.preventDefault());
-    })();
-  </script>
 </body>
 </html>
