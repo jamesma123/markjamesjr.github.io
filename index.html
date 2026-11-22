@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vinci Vision Systems</title>
+  <title>Vinci Vision Systems | Edge Perception and Autonomy for Defense</title>
+  <meta name="description" content="Vinci Vision Systems builds edge perception and autonomy subsystems for uncrewed platforms. Houston, Texas." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -30,7 +31,7 @@
       --ease-smooth: cubic-bezier(0.4, 0, 0, 1);
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 
     body {
       font-family: var(--sans);
@@ -76,7 +77,7 @@
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 36px;
+      gap: clamp(18px, 2.6vw, 36px);
     }
 
     .nav-right a {
@@ -86,6 +87,7 @@
       font-weight: 400;
       letter-spacing: 0.12em;
       text-transform: uppercase;
+      white-space: nowrap;
       transition: color 0.4s;
     }
 
@@ -124,11 +126,7 @@
       overflow: hidden;
     }
 
-    /* Full-bleed video */
-    .hero-video {
-      position: absolute;
-      inset: 0;
-    }
+    .hero-video { position: absolute; inset: 0; }
 
     .hero-video video {
       width: 100%;
@@ -138,7 +136,6 @@
       filter: brightness(0.45) contrast(1.05) saturate(0.3);
     }
 
-    /* Elegant vignette — no harsh gradients */
     .hero-video::after {
       content: '';
       position: absolute;
@@ -148,7 +145,6 @@
         linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 25%, transparent 65%, rgba(0,0,0,0.85) 100%);
     }
 
-    /* Center-aligned hero text */
     .hero-inner {
       position: relative;
       z-index: 2;
@@ -175,9 +171,9 @@
 
     .hero-title {
       font-family: var(--serif);
-      font-size: clamp(42px, 8vw, 120px);
+      font-size: clamp(40px, 7.2vw, 108px);
       font-weight: 300;
-      line-height: 1.0;
+      line-height: 1.02;
       letter-spacing: 0.02em;
       color: var(--white);
       margin-bottom: 32px;
@@ -185,17 +181,14 @@
       animation: softReveal 1.2s 0.4s var(--ease-out) forwards;
     }
 
-    .hero-title em {
-      font-style: italic;
-      font-weight: 300;
-    }
+    .hero-title em { font-style: italic; font-weight: 300; }
 
     .hero-desc {
       font-size: clamp(14px, 1.2vw, 17px);
       font-weight: 300;
       color: var(--silver);
       line-height: 1.75;
-      max-width: 480px;
+      max-width: 540px;
       margin-bottom: 48px;
       opacity: 0;
       animation: softReveal 1.2s 0.6s var(--ease-out) forwards;
@@ -241,7 +234,6 @@
 
     .hero-cta:hover svg { transform: translateX(4px); }
 
-    /* Scroll indicator */
     .scroll-hint {
       position: absolute;
       bottom: 40px;
@@ -281,18 +273,29 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ─── SECTION: PHILOSOPHY ─── */
-    .philosophy {
+    /* ─── SHARED ─── */
+    .label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .split {
       padding: clamp(80px, 12vw, 160px) clamp(24px, 8vw, 120px);
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: clamp(40px, 6vw, 100px);
-      align-items: center;
+      align-items: start;
       max-width: 1300px;
       margin: 0 auto;
     }
 
-    .phil-left {
+    .split-left .label { display: block; margin-bottom: 28px; }
+
+    .statement {
       font-family: var(--serif);
       font-size: clamp(28px, 3.5vw, 52px);
       font-weight: 300;
@@ -301,31 +304,51 @@
       letter-spacing: 0.01em;
     }
 
-    .phil-left em {
-      font-style: italic;
-      color: var(--silver);
-    }
+    .statement em { font-style: italic; color: var(--silver); }
 
-    .phil-right {
+    .split-right {
       display: flex;
       flex-direction: column;
-      gap: 32px;
+      gap: 28px;
     }
 
-    .phil-text {
+    .body-text {
       font-size: 15px;
       font-weight: 300;
       color: var(--stone);
       line-height: 1.8;
     }
 
-    .phil-line {
+    .rule {
       width: 48px;
       height: 1px;
       background: var(--ash);
     }
 
-    /* ─── SECTION: CAPABILITIES ─── */
+    /* Technology index (About) */
+    .tech-index {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 8px;
+    }
+
+    .tech-index li {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--silver);
+      padding: 8px 12px;
+      border: 1px solid var(--ash);
+      transition: border-color 0.4s, color 0.4s;
+    }
+
+    .tech-index li:hover { border-color: var(--stone); color: var(--white); }
+
+    /* ─── TECHNOLOGY CARDS ─── */
     .capabilities {
       padding: clamp(64px, 10vw, 120px) clamp(24px, 5vw, 72px);
       max-width: 1300px;
@@ -339,15 +362,6 @@
       margin-bottom: clamp(48px, 6vw, 80px);
       gap: 24px;
       flex-wrap: wrap;
-    }
-
-    .cap-label {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
     }
 
     .cap-heading {
@@ -385,18 +399,15 @@
     }
 
     .cap-card:hover { background: var(--charcoal); }
-
     .cap-card:hover .cap-card-num { color: var(--white); }
-
     .cap-card:hover .cap-card-title { color: var(--cream); }
-
     .cap-card:hover .cap-card-line { width: 40px; background: var(--pearl); }
 
     .cap-card-num {
       font-family: var(--mono);
       font-size: 11px;
       font-weight: 300;
-      color: var(--ash);
+      color: var(--muted);
       letter-spacing: 0.06em;
       transition: color 0.5s;
     }
@@ -416,7 +427,7 @@
       font-weight: 300;
       color: var(--stone);
       line-height: 1.75;
-      max-width: 380px;
+      max-width: 400px;
     }
 
     .cap-card-line {
@@ -427,34 +438,26 @@
       margin-top: auto;
     }
 
-    /* ─── SECTION: METRICS ─── */
+    /* ─── WHAT WE DO ─── */
+    .wwd { border-top: 1px solid var(--graphite); }
+
+    /* ─── METRICS ─── */
     .metrics {
-      padding: clamp(80px, 10vw, 140px) clamp(24px, 5vw, 72px);
+      padding: 0 clamp(24px, 5vw, 72px) clamp(80px, 10vw, 140px);
       max-width: 1100px;
       margin: 0 auto;
       text-align: center;
-    }
-
-    .metrics-label {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 300;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 64px;
     }
 
     .metrics-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 0;
+      border-top: 1px solid var(--graphite);
+      border-bottom: 1px solid var(--graphite);
     }
 
-    .metric {
-      padding: 32px 16px;
-      position: relative;
-    }
+    .metric { padding: 40px 16px; position: relative; }
 
     .metric:not(:last-child)::after {
       content: '';
@@ -485,12 +488,44 @@
       color: var(--muted);
     }
 
-    /* ─── SECTION: CTA BAND ─── */
-    .cta-band {
-      padding: clamp(64px, 8vw, 100px) clamp(24px, 5vw, 72px);
+    /* ─── WHO WE WORK WITH ─── */
+    .partners {
+      padding: clamp(64px, 10vw, 120px) clamp(24px, 5vw, 72px);
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .partner-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--graphite);
+    }
+
+    .partner {
+      background: var(--ink);
+      padding: clamp(28px, 3.5vw, 48px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .partner-title {
+      font-family: var(--serif);
+      font-size: clamp(20px, 2vw, 28px);
+      font-weight: 400;
+      color: var(--pearl);
+      line-height: 1.2;
+    }
+
+    /* ─── CONTACT ─── */
+    .contact {
+      padding: clamp(72px, 9vw, 120px) clamp(24px, 5vw, 72px);
       text-align: center;
       border-top: 1px solid var(--graphite);
     }
+
+    .contact .label { display: block; margin-bottom: 24px; }
 
     .cta-title {
       font-family: var(--serif);
@@ -501,17 +536,54 @@
       margin-bottom: 12px;
     }
 
-    .cta-title em {
-      font-style: italic;
-      color: var(--silver);
-    }
+    .cta-title em { font-style: italic; color: var(--silver); }
 
     .cta-sub {
       font-size: 14px;
       font-weight: 300;
-      color: var(--muted);
-      margin-bottom: 40px;
+      color: var(--stone);
+      margin-bottom: clamp(40px, 5vw, 64px);
     }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 900px;
+      margin: 0 auto clamp(40px, 5vw, 64px);
+      border-top: 1px solid var(--graphite);
+      border-bottom: 1px solid var(--graphite);
+    }
+
+    .contact-item {
+      padding: 36px 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 40px;
+      background: var(--graphite);
+    }
+
+    .contact-value {
+      font-family: var(--serif);
+      font-size: clamp(18px, 1.8vw, 24px);
+      font-weight: 400;
+      color: var(--pearl);
+      text-decoration: none;
+      overflow-wrap: anywhere;
+      transition: color 0.4s;
+    }
+
+    a.contact-value:hover { color: var(--cream); }
 
     .cta-btn {
       display: inline-flex;
@@ -557,13 +629,10 @@
       font-weight: 400;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--ash);
+      color: var(--muted);
     }
 
-    .footer-links {
-      display: flex;
-      gap: 28px;
-    }
+    .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
 
     .footer-links a {
       color: var(--muted);
@@ -581,7 +650,7 @@
       text-align: center;
       font-size: 10px;
       font-weight: 300;
-      color: var(--ash);
+      color: var(--muted);
       margin-top: 24px;
       letter-spacing: 0.04em;
     }
@@ -593,27 +662,34 @@
       transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
     }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal, .hero-eyebrow, .hero-title, .hero-desc, .hero-cta, .scroll-hint {
+        opacity: 1; transform: none; animation: none; transition: none;
+      }
+      .scroll-line { animation: none; }
     }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
-      .philosophy { grid-template-columns: 1fr; }
+      .split { grid-template-columns: 1fr; }
       .cap-grid { grid-template-columns: 1fr; }
+      .partner-grid { grid-template-columns: 1fr; }
       .metrics-row { grid-template-columns: repeat(2, 1fr); }
-      .metric:nth-child(2)::after { display: none; }
-      .metric:nth-child(3)::after,
-      .metric:nth-child(4)::after { display: none; }
+      .metric::after { display: none; }
+      .nav-right a:not(.nav-contact) { display: none; }
+      .nav-divider { display: none; }
     }
 
     @media (max-width: 600px) {
       nav { height: 60px; }
-      .nav-right a:not(.nav-contact) { display: none; }
-      .nav-divider { display: none; }
+      html { scroll-padding-top: 60px; }
       .hero-title { letter-spacing: 0; }
-      .metrics-row { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-item::after { display: none; }
+      .contact-item { padding: 24px 16px; }
     }
   </style>
 </head>
@@ -622,17 +698,20 @@
 
   <!-- ─── NAV ─── -->
   <nav id="nav">
-    <a class="wordmark" href="#">Vinci</a>
+    <a class="wordmark" href="#home">Vinci</a>
     <div class="nav-right">
-      <a href="#work">Work</a>
-      <a href="#capabilities">Capabilities</a>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#technology">Our Technology</a>
+      <a href="#what-we-do">What We Do</a>
+      <a href="#partners">Partners</a>
       <div class="nav-divider"></div>
       <a href="#contact" class="nav-contact">Get in touch</a>
     </div>
   </nav>
 
   <!-- ─── HERO ─── -->
-  <section class="hero">
+  <section class="hero" id="home">
     <div class="hero-video">
       <video muted autoplay playsinline loop preload="auto">
         <source src="threat_m.mp4" type="video/mp4">
@@ -640,11 +719,11 @@
     </div>
 
     <div class="hero-inner">
-      <div class="hero-eyebrow">Computer Vision Studio</div>
-      <h1 class="hero-title">The future<br><em>is watching</em></h1>
-      <p class="hero-desc">We build intelligent vision systems that see what others cannot. Real-time detection. Autonomous classification. Uncompromising precision.</p>
-      <a href="#work" class="hero-cta">
-        Discover
+      <div class="hero-eyebrow">Edge Perception &amp; Autonomy &middot; Houston, Texas</div>
+      <h1 class="hero-title">Where perception<br><em>meets the mission</em></h1>
+      <p class="hero-desc">Vinci Vision Systems builds the perception and autonomy subsystems that let uncrewed platforms see, decide and act at the tactical edge.</p>
+      <a href="#technology" class="hero-cta">
+        Our technology
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
       </a>
     </div>
@@ -655,23 +734,38 @@
     </div>
   </section>
 
-  <!-- ─── PHILOSOPHY ─── -->
-  <section class="philosophy" id="work">
-    <div class="phil-left reveal">
-      Machines that see<br>with <em>clarity</em>,<br>act with <em>intent</em>.
+  <!-- ─── ABOUT ─── -->
+  <section class="split" id="about">
+    <div class="split-left reveal">
+      <span class="label">About</span>
+      <div class="statement">
+        We build the <em>brain</em>,<br>not the <em>chassis</em>.
+      </div>
     </div>
-    <div class="phil-right reveal">
-      <div class="phil-line"></div>
-      <p class="phil-text">Vinci Vision Systems engineers real-time computer vision architectures for the most demanding environments. Our models detect, classify, and track across aerial, ground, and maritime domains — delivering sub-frame intelligence where it matters most.</p>
-      <p class="phil-text">We don't just process images. We build systems that understand what they see.</p>
+    <div class="split-right reveal">
+      <div class="rule"></div>
+      <p class="body-text">Uncrewed systems are only as capable as what they can perceive. Vinci Vision Systems is a Houston-based defense technology company focused on that one problem: real-time computer vision and autonomy software that runs on the platform itself, without depending on a link back to the cloud.</p>
+      <p class="body-text">We supply perception and autonomy as a subsystem. Platform builders, integrators and program offices bring the vehicle and the mission; we bring the models, the training pipeline and the edge software that make it aware of its surroundings.</p>
+      <ul class="tech-index" aria-label="Technology areas">
+        <li>Computer vision</li>
+        <li>AI / ML</li>
+        <li>Object detection &amp; tracking</li>
+        <li>Edge computing</li>
+        <li>Autonomy</li>
+        <li>Uncrewed systems</li>
+        <li>Vehicle integration</li>
+        <li>Modeling &amp; simulation</li>
+        <li>Synthetic data</li>
+        <li>AR / VR</li>
+      </ul>
     </div>
   </section>
 
-  <!-- ─── CAPABILITIES ─── -->
-  <section class="capabilities" id="capabilities">
+  <!-- ─── OUR TECHNOLOGY ─── -->
+  <section class="capabilities" id="technology">
     <div class="cap-header reveal">
       <div>
-        <div class="cap-label">What we do</div>
+        <div class="label">Our technology</div>
         <div class="cap-heading">Core Systems</div>
       </div>
       <div class="cap-count">04 Disciplines</div>
@@ -680,62 +774,102 @@
     <div class="cap-grid">
       <div class="cap-card reveal">
         <div class="cap-card-num">01</div>
-        <div class="cap-card-title">Real-Time<br>Detection</div>
-        <div class="cap-card-desc">Object detection and persistent tracking built on optimized YOLO architectures. Edge deployment with sub-12ms inference latency.</div>
+        <div class="cap-card-title">AI / ML</div>
+        <div class="cap-card-desc">Custom model development, training and deployment for embedded hardware. Unity-based simulation generates photorealistic synthetic data at scale, cutting annotation cost and covering conditions that are hard to capture in the field.</div>
         <div class="cap-card-line"></div>
       </div>
 
       <div class="cap-card reveal">
         <div class="cap-card-num">02</div>
-        <div class="cap-card-title">Synthetic Data<br>Generation</div>
-        <div class="cap-card-desc">Unity-powered photorealistic simulation environments producing high-fidelity training data at scale. Reduced annotation costs, expanded coverage.</div>
+        <div class="cap-card-title">Computer Vision</div>
+        <div class="cap-card-desc">Object detection, persistent tracking and hierarchical classification across fifty-plus categories, built on optimized YOLO architectures with sub-12ms inference at the edge.</div>
         <div class="cap-card-line"></div>
       </div>
 
       <div class="cap-card reveal">
         <div class="cap-card-num">03</div>
-        <div class="cap-card-title">Multi-Class<br>Classification</div>
-        <div class="cap-card-desc">Hierarchical classification across fifty-plus categories with confidence scoring and continuous model refinement through active learning loops.</div>
+        <div class="cap-card-title">Vehicle Integration</div>
+        <div class="cap-card-desc">Perception and autonomy packaged as a subsystem for uncrewed ground, aerial and maritime platforms, designed to drop into an existing vehicle stack rather than replace it.</div>
         <div class="cap-card-line"></div>
       </div>
 
       <div class="cap-card reveal">
         <div class="cap-card-num">04</div>
-        <div class="cap-card-title">Immersive<br>Environments</div>
-        <div class="cap-card-desc">AR and VR operator interfaces fusing vision outputs into three-dimensional spatial displays for real-time situational awareness.</div>
+        <div class="cap-card-title">Mixed Reality</div>
+        <div class="cap-card-desc">AR and VR operator interfaces that fuse vision outputs into three-dimensional spatial displays, giving operators real-time situational awareness of what the platform sees.</div>
         <div class="cap-card-line"></div>
       </div>
     </div>
   </section>
 
-  <!-- ─── METRICS ─── -->
-  <section class="metrics reveal">
-    <div class="metrics-label">By the numbers</div>
-    <div class="metrics-row">
-      <div class="metric">
-        <div class="metric-value">94.7%</div>
-        <div class="metric-label">Accuracy</div>
+  <!-- ─── WHAT WE DO ─── -->
+  <div class="wwd" id="what-we-do">
+    <section class="split">
+      <div class="split-left reveal">
+        <span class="label">What we do</span>
+        <div class="statement">
+          Machines that see<br>with <em>clarity</em>,<br>act with <em>intent</em>.
+        </div>
       </div>
-      <div class="metric">
-        <div class="metric-value">&lt;12ms</div>
-        <div class="metric-label">Latency</div>
+      <div class="split-right reveal">
+        <div class="rule"></div>
+        <p class="body-text">We engineer real-time vision architectures for demanding environments. Our models detect, classify and track across aerial, ground and maritime domains, and they are built from the start to run on size, weight and power constrained hardware.</p>
+        <p class="body-text">Every system moves through the same loop: simulate, train, deploy to the edge, then refine with active learning as new data comes in. The result is a perception stack that keeps improving after it ships.</p>
       </div>
-      <div class="metric">
-        <div class="metric-value">50+</div>
-        <div class="metric-label">Object Classes</div>
+    </section>
+  </div>
+
+  <!-- ─── WHO WE WORK WITH ─── -->
+  <section class="partners" id="partners">
+    <div class="cap-header reveal">
+      <div>
+        <div class="label">Who we work with</div>
+        <div class="cap-heading">Built to be a supplier</div>
       </div>
-      <div class="metric">
-        <div class="metric-value">24/7</div>
-        <div class="metric-label">Monitoring</div>
+    </div>
+
+    <div class="partner-grid">
+      <div class="partner reveal">
+        <div class="cap-card-num">A</div>
+        <div class="partner-title">Defense primes</div>
+        <p class="body-text">A focused perception and autonomy subsystem to integrate into larger platforms and programs.</p>
+      </div>
+      <div class="partner reveal">
+        <div class="cap-card-num">B</div>
+        <div class="partner-title">Mid-tier contractors &amp; integrators</div>
+        <p class="body-text">Vision and autonomy capability for teams building vehicles, payloads and mission systems.</p>
+      </div>
+      <div class="partner reveal">
+        <div class="cap-card-num">C</div>
+        <div class="partner-title">Government programs</div>
+        <p class="body-text">Direct engagement with program offices and innovation units on prototypes and demonstrations.</p>
       </div>
     </div>
   </section>
 
-  <!-- ─── CTA ─── -->
-  <section class="cta-band" id="contact">
-    <div class="cta-title reveal">Let's build something<br><em>extraordinary</em></div>
-    <div class="cta-sub reveal">We partner with organizations ready to see differently.</div>
-    <a href="#" class="cta-btn reveal">
+  <!-- ─── CONTACT ─── -->
+  <section class="contact" id="contact">
+    <span class="label reveal">Your gateway to us</span>
+    <div class="cta-title reveal">Get in <em>touch</em></div>
+    <div class="cta-sub reveal">Tell us about your platform or program and we will get back to you.</div>
+
+    <!-- TODO: replace the email and phone placeholders below -->
+    <div class="contact-grid reveal">
+      <div class="contact-item">
+        <div class="label">Email</div>
+        <a class="contact-value" href="mailto:EMAIL_HERE">[email address]</a>
+      </div>
+      <div class="contact-item">
+        <div class="label">Phone</div>
+        <a class="contact-value" href="tel:PHONE_HERE">[phone number]</a>
+      </div>
+      <div class="contact-item">
+        <div class="label">Office</div>
+        <div class="contact-value">Houston, Texas, USA</div>
+      </div>
+    </div>
+
+    <a href="mailto:EMAIL_HERE" class="cta-btn reveal">
       Start a conversation
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
     </a>
@@ -745,11 +879,14 @@
   <footer>
     <div class="footer-mark">Vinci Vision Systems</div>
     <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#technology">Our Technology</a>
+      <a href="#what-we-do">What We Do</a>
+      <a href="#partners">Partners</a>
+      <a href="#contact">Contact</a>
       <a href="#">LinkedIn</a>
-      <a href="#">Work</a>
-      <a href="#">Contact</a>
     </div>
-    <div class="footer-copy">&copy; 2025 Vinci Vision Systems. All rights reserved.</div>
+    <div class="footer-copy">&copy; 2026 Vinci Vision Systems. All rights reserved.</div>
   </footer>
 
   <script>
