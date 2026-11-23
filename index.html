@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vinci Vision Systems | Edge Perception and Autonomy for Defense</title>
-  <meta name="description" content="Vinci Vision Systems builds edge perception and autonomy subsystems for uncrewed platforms. Houston, Texas." />
+  <title>Vinci Vision Systems | Computer Vision for Defense</title>
+  <meta name="description" content="Vinci Vision Systems specializes in computer vision systems for detection, tracking, classification and autonomous navigation. Houston, Texas." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -488,6 +488,17 @@
       color: var(--muted);
     }
 
+    .badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--pearl);
+      padding: 10px 16px;
+      border: 1px solid var(--muted);
+    }
+
     /* ─── WHO WE WORK WITH ─── */
     .partners {
       padding: clamp(64px, 10vw, 120px) clamp(24px, 5vw, 72px);
@@ -547,8 +558,8 @@
 
     .contact-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      max-width: 900px;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      max-width: 1000px;
       margin: 0 auto clamp(40px, 5vw, 64px);
       border-top: 1px solid var(--graphite);
       border-bottom: 1px solid var(--graphite);
@@ -579,7 +590,7 @@
       font-weight: 400;
       color: var(--pearl);
       text-decoration: none;
-      overflow-wrap: anywhere;
+      white-space: nowrap;
       transition: color 0.4s;
     }
 
@@ -681,15 +692,16 @@
       .metric::after { display: none; }
       .nav-right a:not(.nav-contact) { display: none; }
       .nav-divider { display: none; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-item::after { display: none; }
+      .contact-item { padding: 24px 16px; }
+      .contact-value { font-size: clamp(15px, 4.4vw, 22px); }
     }
 
     @media (max-width: 600px) {
       nav { height: 60px; }
       html { scroll-padding-top: 60px; }
       .hero-title { letter-spacing: 0; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .contact-item::after { display: none; }
-      .contact-item { padding: 24px 16px; }
     }
   </style>
 </head>
@@ -719,9 +731,9 @@
     </div>
 
     <div class="hero-inner">
-      <div class="hero-eyebrow">Edge Perception &amp; Autonomy &middot; Houston, Texas</div>
-      <h1 class="hero-title">Where perception<br><em>meets the mission</em></h1>
-      <p class="hero-desc">Vinci Vision Systems builds the perception and autonomy subsystems that let uncrewed platforms see, decide and act at the tactical edge.</p>
+      <div class="hero-eyebrow">Computer Vision Systems &middot; Houston, Texas</div>
+      <h1 class="hero-title">Where vision<br><em>meets the mission</em></h1>
+      <p class="hero-desc">Vinci Vision Systems specializes in computer vision for detection, tracking, classification and autonomous navigation at the tactical edge.</p>
       <a href="#technology" class="hero-cta">
         Our technology
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
@@ -739,24 +751,21 @@
     <div class="split-left reveal">
       <span class="label">About</span>
       <div class="statement">
-        We build the <em>brain</em>,<br>not the <em>chassis</em>.
+        We build the <em>eyes</em>,<br>not the <em>chassis</em>.
       </div>
     </div>
     <div class="split-right reveal">
       <div class="rule"></div>
-      <p class="body-text">Uncrewed systems are only as capable as what they can perceive. Vinci Vision Systems is a Houston-based defense technology company focused on that one problem: real-time computer vision and autonomy software that runs on the platform itself, without depending on a link back to the cloud.</p>
-      <p class="body-text">We supply perception and autonomy as a subsystem. Platform builders, integrators and program offices bring the vehicle and the mission; we bring the models, the training pipeline and the edge software that make it aware of its surroundings.</p>
+      <p class="body-text">Uncrewed systems are only as capable as what they can see. Vinci Vision Systems is a Houston-based defense technology company that does one thing: computer vision. We specialize in vision systems for detection, tracking, classification and autonomous navigation, running on the platform itself without depending on a link back to the cloud.</p>
+      <p class="body-text">We supply vision as a subsystem. Platform builders, integrators and program offices bring the vehicle and the mission; we bring the models, the training pipeline and the edge software that turn camera input into decisions.</p>
       <ul class="tech-index" aria-label="Technology areas">
-        <li>Computer vision</li>
-        <li>AI / ML</li>
-        <li>Object detection &amp; tracking</li>
-        <li>Edge computing</li>
-        <li>Autonomy</li>
+        <li>Object detection</li>
+        <li>Multi-object tracking</li>
+        <li>Classification</li>
+        <li>Vision-based navigation</li>
+        <li>Edge inference</li>
+        <li>Synthetic training data</li>
         <li>Uncrewed systems</li>
-        <li>Vehicle integration</li>
-        <li>Modeling &amp; simulation</li>
-        <li>Synthetic data</li>
-        <li>AR / VR</li>
       </ul>
     </div>
   </section>
@@ -774,29 +783,29 @@
     <div class="cap-grid">
       <div class="cap-card reveal">
         <div class="cap-card-num">01</div>
-        <div class="cap-card-title">AI / ML</div>
-        <div class="cap-card-desc">Custom model development, training and deployment for embedded hardware. Unity-based simulation generates photorealistic synthetic data at scale, cutting annotation cost and covering conditions that are hard to capture in the field.</div>
+        <div class="cap-card-title">Detection</div>
+        <div class="cap-card-desc">Real-time object detection built on optimized YOLO architectures, deployed on embedded hardware with sub-12ms inference latency.</div>
         <div class="cap-card-line"></div>
       </div>
 
       <div class="cap-card reveal">
         <div class="cap-card-num">02</div>
-        <div class="cap-card-title">Computer Vision</div>
-        <div class="cap-card-desc">Object detection, persistent tracking and hierarchical classification across fifty-plus categories, built on optimized YOLO architectures with sub-12ms inference at the edge.</div>
+        <div class="cap-card-title">Tracking</div>
+        <div class="cap-card-desc">Persistent multi-object tracking that holds identity from frame to frame, so a detection becomes a track an operator or autonomy stack can act on.</div>
         <div class="cap-card-line"></div>
       </div>
 
       <div class="cap-card reveal">
         <div class="cap-card-num">03</div>
-        <div class="cap-card-title">Vehicle Integration</div>
-        <div class="cap-card-desc">Perception and autonomy packaged as a subsystem for uncrewed ground, aerial and maritime platforms, designed to drop into an existing vehicle stack rather than replace it.</div>
+        <div class="cap-card-title">Classification</div>
+        <div class="cap-card-desc">Hierarchical classification across fifty-plus categories with confidence scoring, refined continuously through active learning as new data comes in.</div>
         <div class="cap-card-line"></div>
       </div>
 
       <div class="cap-card reveal">
         <div class="cap-card-num">04</div>
-        <div class="cap-card-title">Mixed Reality</div>
-        <div class="cap-card-desc">AR and VR operator interfaces that fuse vision outputs into three-dimensional spatial displays, giving operators real-time situational awareness of what the platform sees.</div>
+        <div class="cap-card-title">Autonomous<br>Navigation</div>
+        <div class="cap-card-desc">Vision-based navigation that lets uncrewed platforms understand their surroundings and find a path from camera input, packaged to drop into an existing vehicle stack.</div>
         <div class="cap-card-line"></div>
       </div>
     </div>
@@ -814,7 +823,7 @@
       <div class="split-right reveal">
         <div class="rule"></div>
         <p class="body-text">We engineer real-time vision architectures for demanding environments. Our models detect, classify and track across aerial, ground and maritime domains, and they are built from the start to run on size, weight and power constrained hardware.</p>
-        <p class="body-text">Every system moves through the same loop: simulate, train, deploy to the edge, then refine with active learning as new data comes in. The result is a perception stack that keeps improving after it ships.</p>
+        <p class="body-text">Every system moves through the same loop: generate synthetic training data in simulation, train, deploy to the edge, then refine as new data comes in. The result is a vision stack that keeps improving after it ships.</p>
       </div>
     </section>
   </div>
@@ -826,18 +835,19 @@
         <div class="label">Who we work with</div>
         <div class="cap-heading">Built to be a supplier</div>
       </div>
+      <div class="badge">CMMC Level 1 (Self) &middot; Current</div>
     </div>
 
     <div class="partner-grid">
       <div class="partner reveal">
         <div class="cap-card-num">A</div>
         <div class="partner-title">Defense primes</div>
-        <p class="body-text">A focused perception and autonomy subsystem to integrate into larger platforms and programs.</p>
+        <p class="body-text">A focused computer vision subsystem to integrate into larger platforms and programs.</p>
       </div>
       <div class="partner reveal">
         <div class="cap-card-num">B</div>
         <div class="partner-title">Mid-tier contractors &amp; integrators</div>
-        <p class="body-text">Vision and autonomy capability for teams building vehicles, payloads and mission systems.</p>
+        <p class="body-text">Detection, tracking, classification and navigation for teams building vehicles, payloads and mission systems.</p>
       </div>
       <div class="partner reveal">
         <div class="cap-card-num">C</div>
@@ -853,15 +863,14 @@
     <div class="cta-title reveal">Get in <em>touch</em></div>
     <div class="cta-sub reveal">Tell us about your platform or program and we will get back to you.</div>
 
-    <!-- TODO: replace the email and phone placeholders below -->
     <div class="contact-grid reveal">
       <div class="contact-item">
         <div class="label">Email</div>
-        <a class="contact-value" href="mailto:EMAIL_HERE"> mark.james@vincivisionsystems.com </a>
+        <a class="contact-value" href="mailto:mark.james@vincivisionsystems.com">mark.james@vincivisionsystems.com</a>
       </div>
       <div class="contact-item">
         <div class="label">Phone</div>
-        <a class="contact-value" href="tel:PHONE_HERE">713-446-1847</a>
+        <a class="contact-value" href="tel:+17134461857">(713) 446-1857</a>
       </div>
       <div class="contact-item">
         <div class="label">Office</div>
@@ -869,7 +878,7 @@
       </div>
     </div>
 
-    <a href="mailto:EMAIL_HERE" class="cta-btn reveal">
+    <a href="mailto:mark.james@vincivisionsystems.com" class="cta-btn reveal">
       Start a conversation
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
     </a>
@@ -886,7 +895,7 @@
       <a href="#contact">Contact</a>
       <a href="#">LinkedIn</a>
     </div>
-    <div class="footer-copy">&copy; 2026 Vinci Vision Systems. All rights reserved.</div>
+    <div class="footer-copy">&copy; 2026 Vinci Vision Systems. All rights reserved. &middot; CMMC Level 1 (Self)</div>
   </footer>
 
   <script>
